@@ -1,4 +1,5 @@
 const audioContext = (function() {
+	/** @type {AudioContext} */
 	let context
 	return () => context = context || new AudioContext()
 }())
@@ -27,9 +28,16 @@ export const WMS_LABELS = [
 	'b1', 'b2', 'b3', 'b4', 'b5', 'b6', 'b7', 'u1'
 ]
 
-export function WmsWave(p) {
-	const data = wmsByteToFloat(williams(...p))
+/**
+ * Creates a playable AudioBuffer given an array of the 8
+ * williams function params.
+ * @param {[number, number, number, number, number, number, number, number]} params
+ * @returns an interface with the buffer, play and stop methods.
+ */
+export function WmsWave(params) {
+	const data = wmsByteToFloat(williams(...params))
 	const buffer = createBufferFromData(data)
+	/** @type {AudioBufferSourceNode | undefined} */
 	let bs
 	function play() {
 		return new Promise(r => {
@@ -151,7 +159,10 @@ function wmsByteToFloat (ba) {
 	return fa
 }
 
-/** @param {Float32Array} data */
+/**
+ * @param {Float32Array} data
+ * @returns {AudioBuffer}
+ */
 function createBufferFromData (data) {
 	const ac = audioContext()
 	const b = ac.createBuffer(1, data.length, ac.sampleRate)
@@ -159,7 +170,10 @@ function createBufferFromData (data) {
 	return b
 }
 
-/** @param {AudioBuffer} b */
+/**
+ * @param {AudioBuffer} b
+ * @returns {AudioBufferSourceNode}
+ */
 function createBufferSource (b) {
 	const ac = audioContext()
 	const bs = ac.createBufferSource()
