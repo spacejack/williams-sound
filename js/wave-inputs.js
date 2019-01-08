@@ -8,6 +8,7 @@ interface Attrs {
 }
 */
 
+/** UI component for wave params */
 export default function WaveInputs() {
 	return {
 		view({attrs: {params, onChange}}) {
